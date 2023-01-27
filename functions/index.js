@@ -27,7 +27,7 @@ exports.sendEmail = functions.firestore
   .onCreate((snap, context) => {
     const newInvoice = snap.data();
     const mailOptions = {
-      from: "gookie712@gmail.com",
+      from: "",
       to: newInvoice.email,
       subject: "New Invoice",
       html: `<h1>Hi ${newInvoice.fullName}!</h1>
