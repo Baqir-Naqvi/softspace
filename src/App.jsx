@@ -26,7 +26,7 @@ function App() {
 
     getDocs(q).then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        orderslist.push({...doc.data(), docID: 
+        orderslist.push({...doc.data(), docId: 
           //generate a random id for each order
           Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) 
 
@@ -34,7 +34,6 @@ function App() {
         });
       });
       setOrders(orderslist);
-      console.log(orderslist);
     }
     );
   }, []);
@@ -47,7 +46,7 @@ function App() {
     data.bankdetails = activeOrder?.bankdetails;
 
     try {
-      setDoc(doc(firestore, "invoices", data.docID), data);
+      setDoc(doc(firestore, "invoices", data.docId), data);
     } catch (err) {
      return console.log(err);
     }
