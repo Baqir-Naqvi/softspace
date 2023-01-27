@@ -4,11 +4,11 @@ import "./App.css";
 import { addDoc, collection } from "@firebase/firestore";
 import { useRef,useEffect } from 'react';
 import { firestore } from './firebaseconfig/firebaseconfig'
-import {getDocs, query, where} from "firebase/firestore";
+import {getDocs, query, doc} from "firebase/firestore";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-
+import { setDoc } from "@firebase/firestore";
 
 function App() {
    const [show, setShow] = useState(false);
@@ -23,11 +23,18 @@ function App() {
     //get all data from orders collection
     const q = query(collection(firestore, "orders"))
     const orderslist = [];
+
     getDocs(q).then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        orderslist.push(doc.data());
+        orderslist.push({...doc.data(), docID: 
+          //generate a random id for each order
+          Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) 
+
+      
+        });
       });
       setOrders(orderslist);
+      console.log(orderslist);
     }
     );
   }, []);
@@ -40,7 +47,7 @@ function App() {
     data.bankdetails = activeOrder?.bankdetails;
 
     try {
-      addDoc(ref, data)
+      setDoc(doc(firestore, "invoices", data.docID), data);
     } catch (err) {
      return console.log(err);
     }
